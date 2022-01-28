@@ -1,10 +1,8 @@
 # TeamJCIM_Backend
 
-## Stack : MYSQL, Nodejs, Express
+## 코드 커밋 규약 가이드 
 
-# 코드 커밋 규약 가이드 
-
-## reference : [참고 링크](https://tttsss77.tistory.com/58)
+### reference : [참고 링크](https://tttsss77.tistory.com/58)
 
 * 한글로 작성 → 유형 : 내용(구체적으로 작성)
 * 헤더 타입과 작성 예제
