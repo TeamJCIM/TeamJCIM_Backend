@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
         res.status(200).send(defaultRes.successFalse(200, "해당하는 IoTNum의 안전 데이터가 존재하지 않습니다."));
     } else { // IotNum에 해당하는 컬럼이 있는 경우
         console.log(selectUserResult);
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "안전 데이터 존재", selectUserResult));
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "안전 데이터 존재", selectUserResult[selectUserResult.length-1]));
     }    
 });
 
