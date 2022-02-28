@@ -15,7 +15,7 @@ const jwtUtils = require('../../../module/jwt');
 router.get('/', async (req, res) => {
     
     const selectUserQuery = 'SELECT IotData FROM DataOfIotDay WHERE IotNum = ? and Date = ?'
-    const selectUserResult = await db.queryParam_Parse(selectUserQuery,[req.body.Iotnum, req.body.Date]);
+    const selectUserResult = await db.queryParam_Parse(selectUserQuery,[req.body.IotNum, req.body.Date]);
 
     if(!selectUserResult){
         res.status(200).send(defaultRes.successFalse(statusCode.OK, resMessage.DB_ERROR));
