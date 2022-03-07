@@ -20,7 +20,7 @@ console.log("new_date", new_date)
 router.get('/', async (req, res) => {
     
     const selectTodayIotQuery = 'select Date,VoltageAvg from DataOfIotMinute where IotNum = ? and DATE(Date)= ? ORDER BY Date'
-    const selectTodayIotResult = await db.queryParam_Parse(selectTodayIotQuery,[req.body.IotNum,req.body.Date ]);
+    const selectTodayIotResult = await db.queryParam_Parse(selectTodayIotQuery,[req.body.IotNum,req.body.Date]);
     // req.body.Date
     if(!selectTodayIotResult){
         res.status(200).send(defaultRes.successFalse(statusCode.OK, resMessage.DB_ERROR));
