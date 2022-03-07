@@ -22,22 +22,23 @@ console.log(now_year)
 
 router.get('/', async (req, res) => {
     // 당일사용량
-    const selectTodayQuery = 'SELECT IotData FROM DataOfIotDay WHERE IotNum = ? and Date = ?'
+    const selectTodayQuery = 'SELECT Date, IotData FROM DataOfIotDay WHERE IotNum = ? and Date = ?'
     const selectTodayResult = await db.queryParam_Parse(selectTodayQuery,[req.body.IotNum, now_date]);
     // 당월/전월 사용량
-    const selectMonthQuery = 'SELECT IotData, Date FROM DataOfIotDay WHERE IotNum = ? and Month = ?'
+    const selectMonthQuery = 'SELECT Date,IotData  FROM DataOfIotDay WHERE IotNum = ? and Month = ?'
     const selectThismonthResult = await db.queryParam_Parse(selectMonthQuery, [req.body.IotNum, now_month]);
     last_month = now_month -1
     const selectLastmonthResult = await db.queryParam_Parse(selectMonthQuery, [req.body.IotNum, last_month]);
     // 연간사용량
-    const selectYearQuery = 'SELECT Month, IotData FROM DataOfIotMonth WHERE IotNum = ? and Year = ?'
+    const selectYearQuery = 'SELECT Month,IotData FROM DataOfIotMonth WHERE IotNum = ? and Year = ?'
     const selectYearResult = await db.queryParam_Parse(selectYearQuery, [req.body.IotNum, now_year]);
 
     if(!(selectTodayResult || selectYearResult || selectThismonthResult || selectLastmonthResult)){
         res.status(200).send(defaultRes.successFalse(statusCode.OK, resMessage.DB_ERROR));
     }else{
         console.log(selectTodayResult)
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.LOOKUP_SUCCESS, [selectTodayResult,selectThismonthResult,selectLastmonthResult,selectYearResult]));
+        // selectTodayResult,selectThismonthResult,selectLastmonthResult,
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.LOOKUP_SUCCESS, [selectYearResult]));
     }
 });
 

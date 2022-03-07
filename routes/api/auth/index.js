@@ -14,8 +14,8 @@ var router = express.Router();
 // router.use("/signup_phone_auth", require("./signup_phone_auth"));
 // router.use("/find_password", require("./find_password"));
 
-// router.use("/profile", require("./profile"));
-// router.use("/ChangeProfile", require("./ChangeProfile"));
+router.use("/profile", require("./profile"));
+router.use("/ChangeProfile", require("./ChangeProfile"));
 
 
 module.exports = router;
