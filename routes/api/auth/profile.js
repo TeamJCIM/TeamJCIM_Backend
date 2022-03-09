@@ -14,7 +14,8 @@ const db = require('../../../module/pool');
 const jwtUtils = require('../../../module/jwt');
 
 router.get('/', async (req, res) => {
-    
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "*");
     const selectUserQuery = 'SELECT Name, Phone, Email, Location, IotNum FROM user WHERE UserId = ?'
     const selectUserResult = await db.queryParam_Parse(selectUserQuery, req.body.userid);
 
