@@ -44,6 +44,6 @@ module.exports = {
   PW_CHECK_ERROR : "새 비밀번호와 새 비밀번호 재확인이 일치하지 않습니다.",
   PW_CHECK_SUCCESS : "비밀번호 확인 성공",
 
-  OVERVIEW_LOOKUP_SUCCESS : "당일사용량 전력조회 성공",
+  OVERVIEW_LOOKUP_SUCCESS : "overview 데이터 조회 성공",
   LOOKUP_SUCCESS : "전력조회 성공",
 };
