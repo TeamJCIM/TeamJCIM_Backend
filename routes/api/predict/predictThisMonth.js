@@ -9,6 +9,8 @@ const moment = require('moment');
 const { query } = require('express');
 
 router.get('/', async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "*");
     var now_day = moment().format('DD')
     var now_month = parseInt(moment().format('MM'));
     var now_year = parseInt(moment().format('YYYY'));
