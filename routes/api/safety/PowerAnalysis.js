@@ -5,9 +5,11 @@ const resMessage = require('../../../module/utils/responseMessage');
 const statusCode = require("../../../module/utils/statusCode");
 const db = require('../../../module/pool');
 
-router.get('/', async (req, res) => {
-    var IotNum = req.body.IotNum;
-    var Year = req.body.Year;
+router.get('/:IotNum/:Year', async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "*");
+    var IotNum = req.params.IotNum;
+    var Year = req.params.Year;
 
     const selectAIQuery = 'SELECT PredictData, Month FROM AiMonth WHERE IotNum = ? AND Year = ?';
     const selectAIResult = await db.queryParam_Parse(selectAIQuery, [IotNum,Year]);
