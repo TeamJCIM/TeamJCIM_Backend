@@ -6,6 +6,8 @@ const statusCode = require("../../../module/utils/statusCode");
 const db = require('../../../module/pool');
 
 router.get('/', async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "*");
     var IotNum = req.body.IotNum;
     const selectUserQuery = 'SELECT IotNum, Temperature, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature FROM DataOfIotMinute WHERE IotNum = ?';
     const selectUserResult = await db.queryParam_Parse(selectUserQuery, IotNum);

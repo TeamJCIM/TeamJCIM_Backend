@@ -5,12 +5,12 @@ const resMessage = require('../../../module/utils/responseMessage');
 const statusCode = require("../../../module/utils/statusCode");
 const db = require('../../../module/pool');
 
-router.get('/', async (req, res) => {
-    var IotNum = req.body.IotNum;
-    var Year = req.body.Year;
+router.get('/:IotNum', async (req, res) => {
+    var IotNum = req.params.IotNum;
+    var Year = req.params.Year;
 
     // 현재 iot 상태 기록
-    var IotNum = req.body.IotNum;
+    var IotNum = req.params.IotNum;
     const selectUserQuery2 = 'SELECT Temperature, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature FROM DataOfIotMinute WHERE IotNum = ?';
     const selectUserResult2 = await db.queryParam_Parse(selectUserQuery2, IotNum);
 
