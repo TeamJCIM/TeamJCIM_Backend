@@ -15,15 +15,18 @@ const jwtUtils = require('../../../module/jwt');
 const monthLength = require("../../../module/utils/monthLength");
 const moment = require('moment');
 
-router.get('/', async (req, res) => {
+router.get('/:IotNum/:Date', async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "*");
+    
     // 전력 조회
     const selectUsageElecQuery = 'SELECT IotData FROM DataOfIotDay WHERE IotNum = ? and Date = ?'
-    const selectUsageElecResult = await db.queryParam_Parse(selectUsageElecQuery,[req.body.IotNum, req.body.Date]);
+    const selectUsageElecResult = await db.queryParam_Parse(selectUsageElecQuery,[req.params.IotNum, req.params.Date]);
 
     // 전력 예측
     var now_month = parseInt(moment().format('MM'));
     var now_year = parseInt(moment().format('YYYY'));
-    var IotNum = req.body.IotNum;
+    var IotNum = req.params.IotNum;
     var predictElec = 2000;
 
     const selectUserQuery = 'SELECT Date, IoTData FROM DataOfIotDay WHERE IotNum = ? AND YEAR(Date) = ? AND MONTH(Date) = ?';
@@ -35,17 +38,11 @@ router.get('/', async (req, res) => {
 
     // 하루 사용량
     const selectTodayIotQuery = 'select Date,VoltageAvg from DataOfIotMinute where IotNum = ? and DATE(Date)= ? ORDER BY Date'
-    const selectTodayIotResult = await db.queryParam_Parse(selectTodayIotQuery,[req.body.IotNum,req.body.Date]);
+    const selectTodayIotResult = await db.queryParam_Parse(selectTodayIotQuery,[req.params.IotNum,req.params.Date]);
 
-    //selectUsageElecResult || selectUserResult || selectSafeUserResult || selectTodayIotResult
     if(!(selectUsageElecResult || selectUserResult || selectSafeUserResult || selectTodayIotResult)){
         res.status(200).send(defaultRes.successFalse(statusCode.OK, resMessage.DB_ERROR));
     } else{
-        console.log(selectUsageElecResult)
-        console.log(selectUserResult)
-        console.log(selectSafeUserResult)
-        console.log(selectTodayIotResult)
-
         var sum = 0;
         const querylen = selectUserResult.length;
         const shortagelen = monthLength[now_month] - querylen;
