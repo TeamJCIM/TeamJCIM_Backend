@@ -37,8 +37,8 @@ router.get('/:IotNum/:Date', async (req, res) => {
     const selectSafeUserResult = await db.queryParam_Parse(selectSafeUserQuery, IotNum);
 
     // 하루 사용량
-    const selectTodayIotQuery = 'select DATE(Date),VoltageAvg from DataOfIotMinute where IotNum = ? and DATE(Date)= ? ORDER BY Date'
-    const selectTodayIotResult = await db.queryParam_Parse(selectTodayIotQuery,[req.params.IotNum,req.params.Date]);
+    const selectTodayIotQuery = 'select Date,VoltageAvg from DataOfIotMinute where DATE(Date) like ? and IotNum = ? ORDER BY Date;';
+    const selectTodayIotResult = await db.queryParam_Parse(selectTodayIotQuery,[req.params.Date,req.params.IotNum]);
 
     if(!(selectUsageElecResult || selectUserResult || selectSafeUserResult || selectTodayIotResult)){
         res.status(200).send(defaultRes.successFalse(statusCode.OK, resMessage.DB_ERROR));
