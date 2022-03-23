@@ -37,7 +37,7 @@ router.get('/:IotNum/:Date', async (req, res) => {
     const selectSafeUserResult = await db.queryParam_Parse(selectSafeUserQuery, IotNum);
 
     // 하루 사용량
-    const selectTodayIotQuery = 'select Date,VoltageAvg from DataOfIotMinute where IotNum = ? and DATE(Date)= ? ORDER BY Date'
+    const selectTodayIotQuery = 'select DATE(Date),VoltageAvg from DataOfIotMinute where IotNum = ? and DATE(Date)= ? ORDER BY Date'
     const selectTodayIotResult = await db.queryParam_Parse(selectTodayIotQuery,[req.params.IotNum,req.params.Date]);
 
     if(!(selectUsageElecResult || selectUserResult || selectSafeUserResult || selectTodayIotResult)){
@@ -57,7 +57,7 @@ router.get('/:IotNum/:Date', async (req, res) => {
         }
         userAvg = sum / monthLength[now_month];
 
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.OVERVIEW_LOOKUP_SUCCESS, [selectUsageElecResult, selectUserResult, selectSafeUserResult[selectSafeUserResult.length-1], selectTodayIotResult]));
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.OVERVIEW_LOOKUP_SUCCESS, [selectUsageElecResult, "전력예측값 : " + userAvg, selectSafeUserResult[selectSafeUserResult.length-1], selectTodayIotResult]));
     }
 });
 
