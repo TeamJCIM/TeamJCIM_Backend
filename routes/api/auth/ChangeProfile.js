@@ -7,17 +7,18 @@ const { Iot } = require('aws-sdk');
 var router = express.Router();
         
 router.post('/', async (req, res) => {
-    const email = req.body.email;
-    const phone = req.body.phone;
-    const name = req.body.name;
-    const birth = req.body.birth;
-    const address = req.body.address;
-    const Iotnum = req.body.Iotnum;
+    
 
-    const userid = req.body.userid;
+    const name = req.body.Name;
+    const phone = req.body.Phone;
+    const email = req.body.Email;
+    const location = req.body.Location;
+    const Iotnum = req.body.IotNum;
+    const UserId = req.body.UserId;
 
-    const changeQuery = 'UPDATE user SET Email = ?, Phone = ?, Name = ?, Birth = ?, Address = ?, IotNum = ? WHERE UserId= ?';
-    const changeResult = await db.queryParam_Arr(changeQuery, [email, phone, name, birth, address, Iotnum, userid]);
+
+    const changeQuery = 'UPDATE user SET  Name = ?, Phone = ?, Email = ?, Location = ?, IotNum = ? WHERE UserId= ?';
+    const changeResult = await db.queryParam_Arr(changeQuery, [name, phone, email, location, Iotnum, UserId]);
     res.status(200).send(defaultRes.successTrue(200, "회원정보 수정 완료"));
 });
 
