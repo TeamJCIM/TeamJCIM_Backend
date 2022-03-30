@@ -14,5 +14,6 @@ router.use("/find_password", require("./find_password"));
 router.use("/profile", require("./profile"));
 router.use("/ChangeProfile", require("./ChangeProfile"));
 
+router.use("/change_pw", require("./change_pw"));
 
 module.exports = router;
