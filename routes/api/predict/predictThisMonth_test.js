@@ -15,10 +15,10 @@ router.get('/:IotNum', async (req, res) => {
 
     var now_year = 2021;
     
-    const ExistData = 'SELECT IotData FROM team_JCIM.DataOfIotMonth WHERE Year = ?';
+    const ExistData = 'SELECT Month, IotData FROM team_JCIM.DataOfIotMonth WHERE Year = ? order by Month';
     const ExistDataResult = await db.queryParam_Parse(ExistData, [now_year]);  
 
-    const ExistPredict = 'SELECT IotData FROM team_JCIM.DataOfIotMonth WHERE Year = ?';
+    const ExistPredict = 'SELECT Month , IotData FROM team_JCIM.DataOfIotMonth WHERE Year = ? order by Month';
     const ExistPredictResult = await db.queryParam_Parse(ExistPredict, [now_year]);  
 
     var now_month = 12;  // test를 위한 월 오늘이 12월5일이라고 생각.
