@@ -13,36 +13,59 @@ const db = require('../../../module/pool');
 /* jwt 토큰 모듈 */
 const jwtUtils = require('../../../module/jwt');
 
-/* 현재 비밀번호 api */
-router.get('/get_pw/:User_Id', async (req, res) => {
-    
-    const GetPwQuery = 'SELECT Password FROM team_JCIM.user where UserId = ?'
-    const GetPwResult = await db.queryParam_Arr(GetPwQuery, [req.params.User_Id]);
-
-    if (!GetPwResult) {
-            res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, "해당 비밀번호가 없습니다"));
-        } else { //쿼리문이 성공했을 때
-            res.status(200).send(defaultRes.successTrue(statusCode.OK, "암호화된 비밀번호 입니다", GetPwResult));
-        }
-
-});
-
-
+/* 비밀번호 변경 api */
 router.post('/:User_Id', async (req, res) => {
-    changepw = req.body.Password
+    oldpw = req.body.OldPassword
+    changepw = req.body.NewPassword
+    /* 1. Salt 값 가져오기 */
+    const GetSaltQuery = 'SELECT Salt FROM team_JCIM.user where UserId = ?'
+    const GetSaltResult = await db.queryParam_Arr(GetSaltQuery, [req.params.User_Id]);
 
-    const buf = await crypto.randomBytes(64);
-    const salt = buf.toString('base64');
-    const hashedPw = await crypto.pbkdf2(changepw, salt, 1000, 32, 'SHA512')
+    if(!GetSaltResult){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, "비밀번호 입력 오류"));
+        
+    }
+    else{
+        /* 2. DB비번과 비교하기 */
+        var salt1 = GetSaltResult[0]['Salt']
+        const hashedPw = await crypto.pbkdf2(oldpw, salt1, 1000, 32, 'SHA512')
 
-    const ChangePwQuery = 'Update team_JCIM.user set  Password = ? where UserId = ?'
-    const ChangePwResult = await db.queryParam_Arr(ChangePwQuery, [hashedPw, req.params.User_Id]);
+        const GetPasswordQuery = 'SELECT Password FROM team_JCIM.user where UserId = ?'
+        const GetPasswordResult = await db.queryParam_Arr(GetPasswordQuery, [req.params.User_Id]);
+        
+        var db_password = GetPasswordResult[0]['Password']
 
-    if (!ChangePwResult) {
-            res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, "비밀번호 변경 실패"));
-        } else { //쿼리문이 성공했을 때
-            res.status(200).send(defaultRes.successTrue(statusCode.OK, "비밀번호 변경 성공"));
+        // console.log('db : ',db_password)
+        // console.log('hash : ',hashedPw)
+        if(db_password == hashedPw.toString('base64')){
+
+            /* 3. 비밀번호 변경하기 */
+            const buf = await crypto.randomBytes(64);
+            const salt = buf.toString('base64');
+            const hashedPw_new = await crypto.pbkdf2(changepw, salt, 1000, 32, 'SHA512');
+
+
+            const ChangePwQuery = 'Update team_JCIM.user set  Password = ? where UserId = ?'
+            const ChangePwResult = await db.queryParam_Arr(ChangePwQuery, [hashedPw_new, req.params.User_Id]);
+        
+            if (!ChangePwResult) {
+                    res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, "비밀번호 변경 실패"));
+                } else { //쿼리문이 성공했을 때
+                    res.status(200).send(defaultRes.successTrue(statusCode.OK, "비밀번호 변경 성공"));
+                }
+
         }
+        else{
+
+            res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, "입력한 비밀번호가 일치하지 않습니다."));
+        }
+        
+        
+        
+        
+
+
+    }
 
 });
 
