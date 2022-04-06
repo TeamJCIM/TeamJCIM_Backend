@@ -45,8 +45,8 @@ router.post('/:User_Id', async (req, res) => {
             const hashedPw_new = await crypto.pbkdf2(changepw, salt, 1000, 32, 'SHA512');
 
 
-            const ChangePwQuery = 'Update team_JCIM.user set  Password = ? where UserId = ?'
-            const ChangePwResult = await db.queryParam_Arr(ChangePwQuery, [hashedPw_new, req.params.User_Id]);
+            const ChangePwQuery = 'Update team_JCIM.user set  Password = ? , Salt = ? where UserId = ?'
+            const ChangePwResult = await db.queryParam_Arr(ChangePwQuery, [hashedPw_new.toString('base64'), salt, req.params.User_Id]);
         
             if (!ChangePwResult) {
                     res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, "비밀번호 변경 실패"));
