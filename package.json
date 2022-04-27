@@ -8,6 +8,7 @@
   "dependencies": {
     "aws-sdk": "2.804.0",
     "axios": "^0.25.0",
+    "child-process": "^1.0.2",
     "cookie-parser": "~1.4.4",
     "crypto-js": "^4.1.1",
     "crypto-promise": "^2.1.0",
@@ -22,10 +23,13 @@
     "morgan": "~1.9.1",
     "multer": "1.4.2",
     "multer-s3": "2.9.0",
+    "node-schedule": "^2.1.0",
+    "node-schedule-manager": "^1.0.2",
     "nodemailer": "^6.6.3",
     "npm": "^7.13.0",
     "promise-mysql": "^3.3.2",
     "promise-mysql-native": "^3.3.2",
-    "rand-token": "^1.0.1"
+    "rand-token": "^1.0.1",
+    "scheduler": "^0.22.0"
   }
 }
