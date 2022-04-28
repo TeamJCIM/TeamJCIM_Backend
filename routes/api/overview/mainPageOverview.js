@@ -57,7 +57,7 @@ router.get('/:IotNum/:Date', async (req, res) => {
         }
         userAvg = sum / monthLength[now_month];
 
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.OVERVIEW_LOOKUP_SUCCESS, [selectUsageElecResult, "전력예측값 : " + userAvg, selectSafeUserResult[selectSafeUserResult.length-1], selectTodayIotResult]));
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.OVERVIEW_LOOKUP_SUCCESS, [selectUsageElecResult, userAvg, selectSafeUserResult[selectSafeUserResult.length-1], selectTodayIotResult]));
     }
 });
 
