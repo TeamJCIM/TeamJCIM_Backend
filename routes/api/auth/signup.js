@@ -30,27 +30,37 @@ router.post('/', async (req, res) => {
     console.log(phone);
     console.log(name);
     
-    const signupQuery = 'INSERT INTO user (name, email, phone, password, birth, address, Iotnum, salt) VALUES (?,?,?,?,?,?,?,?)'
+    const signupQuery = 'INSERT INTO user (Name, Email, Phone, Password, Birth, Address, IotNum, Salt) VALUES (?,?,?,?,?,?,?,?)'
 
     //(3) email 중복 없을 시, 회원가입하기
-    // if (selectIdResult[0] == null) {
-        console.log("일치 없음");
-        //(3-1) 비밀번호 암호화 작업
-        const buf = await crypto.randomBytes(64);
-        const salt = buf.toString('base64');
-        const hashedPw = await crypto.pbkdf2(password, salt, 1000, 32, 'SHA512')
+    
+        const EmailDuplicateQuery = 'SELECT Email FROM user where Email = ?'
+        const EmailDuplicateResult = await db.queryParam_Arr(EmailDuplicateQuery, email);
 
-        // console.log(hashedPw);
-        //(3-2) 암호화된 비밀번호와 함께 INSERT 문 실행
-        const signupResult = await db.queryParam_Arr(signupQuery, [name,email,phone,hashedPw.toString('base64'), birth, address, Iotnum, salt]);
-        // console.log(signupResult);
-        
-        //(3-3) 결과값에 따른 쿼리문 출력하기
-        if (!signupResult) {
-            res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.SIGNUP_FAIL));
-        } else { //쿼리문이 성공했을 때
+        if(!EmailDuplicateResult[0]){
 
-            res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.SIGNUP_SUCCESS));
+            console.log("일치 없음");
+            //(3-1) 비밀번호 암호화 작업
+            const buf = await crypto.randomBytes(64);
+            const salt = buf.toString('base64');
+            const hashedPw = await crypto.pbkdf2(password, salt, 1000, 32, 'SHA512')
+
+            // console.log(hashedPw);
+            //(3-2) 암호화된 비밀번호와 함께 INSERT 문 실행
+            const signupResult = await db.queryParam_Arr(signupQuery, [name,email,phone,hashedPw.toString('base64'), birth, address, Iotnum, salt]);
+            // console.log(signupResult);
+            
+            //(3-3) 결과값에 따른 쿼리문 출력하기
+            if (!signupResult) {
+                res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.SIGNUP_FAIL));
+            } else { //쿼리문이 성공했을 때
+
+                res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.SIGNUP_SUCCESS));
+            }
+
+        }
+        else{
+            res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DUPLICATED_ID_FAIL));
         }
 
 });
