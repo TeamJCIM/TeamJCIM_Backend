@@ -39,8 +39,14 @@ router.post('/', async (req, res) => {
             if (!TokenUpdateResult) {
                 res.status(200).send(defaultRes.successTrue(statusCode.DB_ERROR, "refreshtoken DB등록 오류 "));
             } else {
+                const GetIDIOTQuery = 'select IotNum, UserId from user where email = ? and password =?'
+                const GetIDIOTQueryResult = await db.queryParam_Parse(GetIDIOTQuery, [email, dbPw])
+                const UserId = GetIDIOTQueryResult[0].UserId
+                const IotNum = GetIDIOTQueryResult[0].IotNum
+
+
                 res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.SIGNIN_SUCCESS, {
-                    tokens
+                    UserId, IotNum
                 }));
             }
         } else {
