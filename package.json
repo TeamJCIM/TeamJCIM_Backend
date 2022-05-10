@@ -29,6 +29,7 @@
     "npm": "^7.13.0",
     "promise-mysql": "^3.3.2",
     "promise-mysql-native": "^3.3.2",
+    "python-shell": "^3.0.1",
     "rand-token": "^1.0.1",
     "scheduler": "^0.22.0"
   }
