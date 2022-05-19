@@ -19,8 +19,8 @@ const pool = require("../../../config/dbConfig");
 var express = require('express');
 var router = express.Router();
 const schedule = require('node-schedule');
-
-
+var moment = require('moment');
+// moment().format('YYYY-MM-DD hh:mm:ss')
 
 const set = (s)=>{
     // 1. 1분마다, 실행 설정
@@ -37,9 +37,11 @@ const set = (s)=>{
             console.log('init failed!');
         }else {
             // 2. 1분마다의 알림 컬럼별 Status 확인하기
-            const oneMinuteQuery = 'select * from test where date between date_add(?, interval -1 minute) and ? and date not in (?)';
-            const oneMinuteResult = await db.queryParam_Parse(oneMinuteQuery, ['2021-09-05 00:01:00', '2021-09-05 00:01:00', '2021-09-05 00:01:00']);
+            const oneMinuteQuery = 'select * from DataOfIotMinute where date between date_add(?, interval -1 minute) and ? and date not in (?)';
+            const oneMinuteResult = await db.queryParam_Parse(oneMinuteQuery, [moment().format('YYYY-MM-DD hh:mm:ss'), moment().format('YYYY-MM-DD hh:mm:ss'), moment().format('YYYY-MM-DD hh:mm:ss')]);
             console.log(oneMinuteResult);            
+            console.log("체킹하기");            
+            
             // 3. 각 5가지의 알림컬럼별의 Status 별 비교
             const querylen = oneMinuteResult.length;
             
@@ -53,7 +55,8 @@ const set = (s)=>{
                             // 주의
                             console.log("1. 전압 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
-                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IotNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+
+                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
                         }
                         else{
                             console.log("1. 전압 안전")
@@ -64,7 +67,7 @@ const set = (s)=>{
                             // 주의
                             console.log("1. 전압 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
-                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IotNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
                         }
                         else{
                             console.log("1. 전압 안전")
@@ -75,7 +78,7 @@ const set = (s)=>{
                             // 주의
                             console.log("1. 전압 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
-                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IotNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
                         }
                         else{
                             console.log("1. 전압 안전")
@@ -86,7 +89,7 @@ const set = (s)=>{
                             // 주의
                             console.log("1. 전압 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
-                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IotNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
                         }
                         else{
                             console.log("1. 전압 안전")
@@ -97,7 +100,7 @@ const set = (s)=>{
                             // 주의
                             console.log("1. 전압 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
-                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IotNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
                         }
                         else{
                             console.log("1. 전압 안전")
@@ -116,7 +119,7 @@ const set = (s)=>{
                             // 주의
                             console.log("2. 전류 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
-                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IotNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
                         }
                         else{
                             console.log("2. 전류 안전")
@@ -127,7 +130,7 @@ const set = (s)=>{
                             // 주의
                             console.log("2. 전류 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
-                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IotNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
                         }
                         else{
                             console.log("2. 전류 안전")
@@ -138,7 +141,7 @@ const set = (s)=>{
                             // 주의
                             console.log("2. 전류 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
-                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IotNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
                         }
                         else{
                             console.log("2. 전류 안전")
@@ -157,7 +160,7 @@ const set = (s)=>{
                             // 주의
                             console.log("3. 누설전류 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
-                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IotNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
                         }
                         else{
                             console.log("3. 누설전류 안전")
@@ -168,7 +171,7 @@ const set = (s)=>{
                             // 주의
                             console.log("3. 누설전류 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
-                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IotNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
                         }
                         else{
                             console.log("3. 누설전류 안전")
@@ -179,7 +182,7 @@ const set = (s)=>{
                             // 주의
                             console.log("3. 누설전류 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
-                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IotNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
                         }
                         else{
                             console.log("3. 누설전류 안전")
@@ -198,7 +201,7 @@ const set = (s)=>{
                             // 주의
                             console.log("4. 아크 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
-                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IotNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
                         }
                         else{
                             console.log("4. 아크 안전")
@@ -217,7 +220,7 @@ const set = (s)=>{
                             // 주의
                             console.log("5. 온도 안전")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
-                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IotNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
                         }
                         {
                             console.log("5. 온도 안전")
