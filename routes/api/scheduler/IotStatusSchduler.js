@@ -21,6 +21,7 @@ var router = express.Router();
 const schedule = require('node-schedule');
 var moment = require('moment');
 // moment().format('YYYY-MM-DD hh:mm:ss')
+const messageSend = require('../auth/send_message');
 
 const set = (s)=>{
     // 1. 1분마다, 실행 설정
@@ -55,8 +56,11 @@ const set = (s)=>{
                             // 주의
                             console.log("1. 전압 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
-
                             const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+
+                            const selectQuery = 'SELECT Phone FROM team_JCIM.user where IotNum = ?;';
+                            const selectResult = await db.queryParam_Parse(selectQuery, [oneMinuteResult[i].IoTNum]);
+                            messageSend.send_message(selectResult[0].Phone, '현재 과전압 주의 상태입니다');
                         }
                         else{
                             console.log("1. 전압 안전")
@@ -68,6 +72,10 @@ const set = (s)=>{
                             console.log("1. 전압 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
                             const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+
+                            const selectQuery = 'SELECT Phone FROM team_JCIM.user where IotNum = ?;';
+                            const selectResult = await db.queryParam_Parse(selectQuery, [oneMinuteResult[i].IoTNum]);
+                            messageSend.send_message(selectResult[0].Phone, '현재 부족전압 주의 상태입니다');
                         }
                         else{
                             console.log("1. 전압 안전")
@@ -79,6 +87,10 @@ const set = (s)=>{
                             console.log("1. 전압 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
                             const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            
+                            const selectQuery = 'SELECT Phone FROM team_JCIM.user where IotNum = ?;';
+                            const selectResult = await db.queryParam_Parse(selectQuery, [oneMinuteResult[i].IoTNum]);
+                            messageSend.send_message(selectResult[0].Phone, '현재 정전 주의 상태입니다');
                         }
                         else{
                             console.log("1. 전압 안전")
@@ -90,6 +102,10 @@ const set = (s)=>{
                             console.log("1. 전압 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
                             const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                        
+                            const selectQuery = 'SELECT Phone FROM team_JCIM.user where IotNum = ?;';
+                            const selectResult = await db.queryParam_Parse(selectQuery, [oneMinuteResult[i].IoTNum]);
+                            messageSend.send_message(selectResult[0].Phone, '현재 부족전압, 정전 주의 상태입니다');
                         }
                         else{
                             console.log("1. 전압 안전")
@@ -101,6 +117,10 @@ const set = (s)=>{
                             console.log("1. 전압 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
                             const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            
+                            const selectQuery = 'SELECT Phone FROM team_JCIM.user where IotNum = ?;';
+                            const selectResult = await db.queryParam_Parse(selectQuery, [oneMinuteResult[i].IoTNum]);
+                            messageSend.send_message(selectResult[0].Phone, '현재 과전압, 부족전압, 정전 주의 상태입니다');
                         }
                         else{
                             console.log("1. 전압 안전")
@@ -120,6 +140,10 @@ const set = (s)=>{
                             console.log("2. 전류 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
                             const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            
+                            const selectQuery = 'SELECT Phone FROM team_JCIM.user where IotNum = ?;';
+                            const selectResult = await db.queryParam_Parse(selectQuery, [oneMinuteResult[i].IoTNum]);
+                            messageSend.send_message(selectResult[0].Phone, '현재 과전류 주의 상태입니다');
                         }
                         else{
                             console.log("2. 전류 안전")
@@ -131,6 +155,10 @@ const set = (s)=>{
                             console.log("2. 전류 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
                             const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                        
+                            const selectQuery = 'SELECT Phone FROM team_JCIM.user where IotNum = ?;';
+                            const selectResult = await db.queryParam_Parse(selectQuery, [oneMinuteResult[i].IoTNum]);
+                            messageSend.send_message(selectResult[0].Phone, '현재 단락 주의 상태입니다');
                         }
                         else{
                             console.log("2. 전류 안전")
@@ -142,6 +170,10 @@ const set = (s)=>{
                             console.log("2. 전류 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
                             const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                        
+                            const selectQuery = 'SELECT Phone FROM team_JCIM.user where IotNum = ?;';
+                            const selectResult = await db.queryParam_Parse(selectQuery, [oneMinuteResult[i].IoTNum]);
+                            messageSend.send_message(selectResult[0].Phone, '현재 과전류, 단락 주의 상태입니다');
                         }
                         else{
                             console.log("2. 전류 안전")
@@ -161,6 +193,10 @@ const set = (s)=>{
                             console.log("3. 누설전류 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
                             const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                        
+                            const selectQuery = 'SELECT Phone FROM team_JCIM.user where IotNum = ?;';
+                            const selectResult = await db.queryParam_Parse(selectQuery, [oneMinuteResult[i].IoTNum]);
+                            messageSend.send_message(selectResult[0].Phone, '현재 누설전류감지 주의 상태입니다');
                         }
                         else{
                             console.log("3. 누설전류 안전")
@@ -172,6 +208,10 @@ const set = (s)=>{
                             console.log("3. 누설전류 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
                             const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            
+                            const selectQuery = 'SELECT Phone FROM team_JCIM.user where IotNum = ?;';
+                            const selectResult = await db.queryParam_Parse(selectQuery, [oneMinuteResult[i].IoTNum]);
+                            messageSend.send_message(selectResult[0].Phone, '현재 누전차단기 동적 전류 발생 주의 상태입니다');
                         }
                         else{
                             console.log("3. 누설전류 안전")
@@ -183,6 +223,10 @@ const set = (s)=>{
                             console.log("3. 누설전류 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
                             const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                            
+                            const selectQuery = 'SELECT Phone FROM team_JCIM.user where IotNum = ?;';
+                            const selectResult = await db.queryParam_Parse(selectQuery, [oneMinuteResult[i].IoTNum]);
+                            messageSend.send_message(selectResult[0].Phone, '현재 누설전류감지, 누전차단기 동적 전류 발생 주의 상태입니다');
                         }
                         else{
                             console.log("3. 누설전류 안전")
@@ -202,6 +246,10 @@ const set = (s)=>{
                             console.log("4. 아크 주의")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
                             const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                        
+                            const selectQuery = 'SELECT Phone FROM team_JCIM.user where IotNum = ?;';
+                            const selectResult = await db.queryParam_Parse(selectQuery, [oneMinuteResult[i].IoTNum]);
+                            messageSend.send_message(selectResult[0].Phone, '현재 아크발생 주의 상태입니다');
                         }
                         else{
                             console.log("4. 아크 안전")
@@ -221,6 +269,10 @@ const set = (s)=>{
                             console.log("5. 온도 안전")
                             const insertQuery = 'INSERT INTO CautionIot (IotNum, Date, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature) VALUES (?,?,?,?,?,?,?)';
                             const insertResult = await db.queryParam_Parse(insertQuery, [oneMinuteResult[i].IoTNum, oneMinuteResult[i].Date, oneMinuteResult[i].AlarmVoltage, oneMinuteResult[i].AlarmElectric, oneMinuteResult[i].AlarmLeakage, oneMinuteResult[i].AlarmArc, oneMinuteResult[i].AlarmTemperature]);
+                        
+                            const selectQuery = 'SELECT Phone FROM team_JCIM.user where IotNum = ?;';
+                            const selectResult = await db.queryParam_Parse(selectQuery, [oneMinuteResult[i].IoTNum]);
+                            messageSend.send_message(selectResult[0].Phone, '현재 기기 온도 주의 상태입니다');
                         }
                         {
                             console.log("5. 온도 안전")
