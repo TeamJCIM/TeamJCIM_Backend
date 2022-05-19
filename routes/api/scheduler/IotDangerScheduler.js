@@ -40,7 +40,7 @@ const set = (s)=>{
         } else {
             // 2. 1분마다의 알림 컬럼별 Status 확인하기
             const oneMinuteQuery = 'SELECT count(*) as DangerCount, IotNum, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature FROM CautionIot WHERE DATE between date_add(?, interval -1 minute) and ? GROUP BY IotNum, AlarmVoltage, AlarmElectric, AlarmLeakage, AlarmArc, AlarmTemperature';
-            const oneMinuteResult = await db.queryParam_Parse(oneMinuteQuery, [moment().format('YYYY-MM-DD hh:mm:ss'), moment().format('YYYY-MM-DD hh:mm:ss')]);
+            const oneMinuteResult = await db.queryParam_Parse(oneMinuteQuery, ['2022-05-20 12:03:00', '2022-05-20 12:03:00']);
             console.log(oneMinuteResult);            
             // 3. 각 5가지의 알림컬럼별의 Status 별 비교
             const querylen = oneMinuteResult.length;
