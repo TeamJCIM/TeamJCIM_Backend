@@ -28,7 +28,7 @@ const set = (s)=>{
     rule.second = 0;
     
     const job = schedule.scheduleJob(rule, async function(){
-        console.log('IotStatus 1분마다 스케줄 확인');
+        console.log('IotStatus 위험데이터 있는지 1분마다 스케줄 확인');
 
         let initResult = await ScheduleJobManager.initWithConnPool(pool);
 

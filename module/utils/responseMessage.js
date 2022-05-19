@@ -46,4 +46,7 @@ module.exports = {
 
   OVERVIEW_LOOKUP_SUCCESS : "overview 데이터 조회 성공",
   LOOKUP_SUCCESS : "전력조회 성공",
+
+
+  REALDATA_SUCCESS : "실시간데이터 삽입 성공",
 };
