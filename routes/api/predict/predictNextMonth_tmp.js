@@ -15,7 +15,7 @@ router.get('/:IotNum', async (req, res) => {
 
     iotnum = req.params.IotNum;
 
-    const selectpredictdayQuery = 'SELECT PredictData FROM team_JCIM.AiDate where ?;';
+    const selectpredictdayQuery = 'SELECT PredictData FROM team_JCIM.AiDate where IotNum = ?;';
     const selectpredictdayResult = await db.queryParam_Parse(selectpredictdayQuery, [iotnum]);
 
     const selectpredictmonthQuery = 'SELECT PredictData FROM team_JCIM.AiMonth where IotNum = ?;';
