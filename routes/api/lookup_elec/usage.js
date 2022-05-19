@@ -26,15 +26,16 @@ router.get('/:IotNum', async (req, res) => {
     
     // 당일사용량
     const selectTodayQuery = 'SELECT Date, IotData FROM DataOfIotDay WHERE IotNum = ? and Date = ?'
-    const selectTodayResult = await db.queryParam_Parse(selectTodayQuery,[req.params.IotNum, '2021-09-06']);
+    const selectTodayResult = await db.queryParam_Parse(selectTodayQuery,[req.params.IotNum, moment().format('YYYY-MM-DD')]);
     // 당월/전월 사용량
     const selectMonthQuery = 'SELECT Date,IotData  FROM DataOfIotDay WHERE IotNum = ? and Month = ?'
-    const selectThismonthResult = await db.queryParam_Parse(selectMonthQuery, [req.params.IotNum, 9]);
-    last_month = now_month -1
-    const selectLastmonthResult = await db.queryParam_Parse(selectMonthQuery, [req.params.IotNum, 8]);
+    const selectThismonthResult = await db.queryParam_Parse(selectMonthQuery, [req.params.IotNum, moment().format('MM')]);
+    last_month = moment().format('MM') -1 
+    console.log(moment().format('MM'))
+    const selectLastmonthResult = await db.queryParam_Parse(selectMonthQuery, [req.params.IotNum, 'last_month']);
     // 연간사용량
     const selectYearQuery = 'SELECT Month,IotData FROM DataOfIotMonth WHERE IotNum = ? and Year = ?'
-    const selectYearResult = await db.queryParam_Parse(selectYearQuery, [req.params.IotNum, 2021]);
+    const selectYearResult = await db.queryParam_Parse(selectYearQuery, [req.params.IotNum, moment().format('YYYY')]);
 
     if(!(selectTodayResult || selectYearResult || selectThismonthResult || selectLastmonthResult)){
         res.status(200).send(defaultRes.successFalse(statusCode.OK, resMessage.DB_ERROR));
