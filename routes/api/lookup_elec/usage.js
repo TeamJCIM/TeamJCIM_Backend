@@ -32,7 +32,7 @@ router.get('/:IotNum', async (req, res) => {
     const selectThismonthResult = await db.queryParam_Parse(selectMonthQuery, [req.params.IotNum, moment().format('MM')]);
     last_month = moment().format('MM') -1 
     console.log(moment().format('MM'))
-    const selectLastmonthResult = await db.queryParam_Parse(selectMonthQuery, [req.params.IotNum, 'last_month']);
+    const selectLastmonthResult = await db.queryParam_Parse(selectMonthQuery, [req.params.IotNum, last_month]);
     // 연간사용량
     const selectYearQuery = 'SELECT Month,IotData FROM DataOfIotMonth WHERE IotNum = ? and Year = ?'
     const selectYearResult = await db.queryParam_Parse(selectYearQuery, [req.params.IotNum, moment().format('YYYY')]);
