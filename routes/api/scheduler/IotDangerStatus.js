@@ -13,15 +13,15 @@ router.get('/:IotNum', async (req, res) => {
     // const selectSafeQuery = 'SELECT * FROM DangerIot where IotNum = ? and Date like ?';
     // const selectSafeResult = await db.queryParam_Parse(selectSafeQuery, [IotNum, moment().format('YYYY-MM-DD')+'%']);
     
-    // const selectCautionQuery = 'SELECT * FROM CautionIot where IotNum = ? and Date like ?';
-    // const selectCautionResult = await db.queryParam_Parse(selectCautionQuery, [IotNum, moment().format('YYYY-MM-DD')+'%']);
+    const selectCautionQuery = 'SELECT * FROM CautionIot where IotNum = ? and Date like ?';
+    const selectCautionResult = await db.queryParam_Parse(selectCautionQuery, [IotNum, moment().format('YYYY-MM-DD')+'%']);
 
     const selectDangerQuery = 'SELECT * FROM DangerIot where IotNum = ? and Date like ?';
     const selectDangetResult = await db.queryParam_Parse(selectDangerQuery, [IotNum, moment().format('YYYY-MM-DD')+'%']);
 
     
     console.log(selectDangetResult);
-    res.status(200).send(defaultRes.successTrue(statusCode.OK, "오늘 들어온 위험데이터", selectDangetResult));
+    res.status(200).send(defaultRes.successTrue(statusCode.OK, "오늘 들어온 주의,위험데이터", [selectCautionResult,selectDangetResult]));
     // if(!selectCautionResult[0]){
     //     // 안전 인 경우 
     //     res.status(200).send(defaultRes.successTrue(200, "해당하는 IoTNum의 Status는 안전합니다."));
