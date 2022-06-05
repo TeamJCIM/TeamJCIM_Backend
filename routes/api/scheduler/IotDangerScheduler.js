@@ -53,7 +53,7 @@ const set = (s)=>{
                     const selectQuery = 'SELECT Phone FROM team_JCIM.user where IotNum = ?';
                     const selectResult = await db.queryParam_Parse(selectQuery, [oneMinuteResult[i].IotNum]);
                     console.log(selectResult)
-                    messageSend.send_message(selectResult[0].Phone, '현재 위험 상태입니다');
+                    //messageSend.send_message(selectResult[0].Phone, '현재 위험 상태입니다');
                 }
             }
 
